@@ -4,6 +4,14 @@
  */
 package Views;
 
+import Controllers.ConexionDB;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author salaz
@@ -37,13 +45,13 @@ public class Report extends javax.swing.JFrame {
 
         Clientestbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "T. Entrada", "Productos", "Tiempo en Cajas", "T. Salida"
+                "ID", "T. Entrada", "Productos", "Tiempo en Cajas", "T. Salida", "Cajero"
             }
         ));
         jScrollPane1.setViewportView(Clientestbl);
@@ -94,7 +102,39 @@ public class Report extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ConsultarbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConsultarbtnActionPerformed
-        // TODO add your handling code here:
+
+    String sql = "SELECT * FROM tbclientes";
+
+    try (Connection conn = ConexionDB.conectar();
+         PreparedStatement pstmt = conn.prepareStatement(sql);
+         ResultSet rs = pstmt.executeQuery()) {
+
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("ID");
+        model.addColumn("T. Entrada");
+        model.addColumn("Productos");
+        model.addColumn("Tiempo en Caja");
+        model.addColumn("T. Salida");
+        model.addColumn("Cajero");
+
+        while (rs.next()) {
+            model.addRow(new Object[]{
+                rs.getInt("id"),
+                rs.getString("hora_entrada"),
+                rs.getInt("productos"),
+                rs.getString("tiempo_caja"),
+                rs.getString("hora_salida"),
+                rs.getString("nombre_cajero") 
+            });
+        }
+
+
+        Clientestbl.setModel(model);
+
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(this, "Error al consultar los datos: " + ex.getMessage());
+    }
     }//GEN-LAST:event_ConsultarbtnActionPerformed
 
     /**
