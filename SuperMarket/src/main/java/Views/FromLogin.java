@@ -1,10 +1,10 @@
+package Views;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package Login;
-
-import java.awt.Menu;
+import Views.Menu;
 import javax.swing.JOptionPane;
 
 /**
@@ -52,6 +52,12 @@ public class FromLogin extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Contraseña:");
+
+        Passwordtxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PasswordtxtActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Ingresar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -118,15 +124,23 @@ public class FromLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_UsuariotxtActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    
-        if(Usuariotxt.getText().equals ("Admin") && new String(Passwordtxt.getPassword()).equals ("1234")) 
-        {  new Menu().setVisible(true);
-           this.setVisible(false);
-}  
-        else { 
-          JOptionPane.showMessageDialog(null,"Error, Datos Incorrectos.",JOptionPane.ERROR_MESSAGE);
+        String usuario = Usuariotxt.getText();
+        String contraseña = new String(Passwordtxt.getPassword());
+
+        if ("Admin".equals(usuario) && "1234".equals(contraseña)) {
+
+            Menu menu = new Menu();
+            menu.setVisible(true);
+            this.dispose();
+        } else {
+
+            JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void PasswordtxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasswordtxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PasswordtxtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -158,11 +172,14 @@ public class FromLogin extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
+                // Crear e iniciar la ventana de login
                 new FromLogin().setVisible(true);
             }
         });
     }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Ingresarbtn;
